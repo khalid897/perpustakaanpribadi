@@ -257,10 +257,18 @@
     });
 
     function cariBuku() {
-  const keyword = document.getElementById("searchInput").value.toLowerCase();
-  localStorage.setItem("kataKunci", keyword);
-  window.location.href = "lihat-koleksi.html";
-}
+      const keyword = document.getElementById("searchInput").value.toLowerCase();
+      localStorage.setItem("kataKunci", keyword);
+      window.location.href = "lihat-koleksi.html";
+    }
+
+    // Fitur tambahan: tekan Enter untuk cari
+    document.getElementById("searchInput").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        cariBuku();
+      }
+    });
 
     function tampilkanHasil(keyword) {
       const books = JSON.parse(localStorage.getItem("books")) || [];
