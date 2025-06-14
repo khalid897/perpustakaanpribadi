@@ -3,30 +3,110 @@
 <head>
   <title>Login Admin</title>
   <style>
-    body { font-family: sans-serif; background: linear-gradient(135deg, #00C9FF, #92FE9D); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-    .card { background: white; padding: 30px; border-radius: 16px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.15);}
-    input, button { padding: 10px; margin: 8px 0; width: 90%; border-radius: 8px; border: 1px solid #ccc; }
-    button { background: #00C9FF; color: white; font-weight: bold; border: none; cursor: pointer; }
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(135deg, #00C9FF, #92FE9D);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #3289e7;
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      width: 300px;
+      color: white;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 50px;
+      margin: 12px 0;
+      padding: 8px 12px;
+    }
+    .input-group span {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+    .input-group input {
+      border: none;
+      outline: none;
+      flex: 1;
+      padding: 8px;
+      border-radius: 50px;
+      font-size: 14px;
+    }
+    button {
+      background: #222;
+      color: white;
+      font-weight: bold;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-top: 12px;
+      letter-spacing: 1px;
+    }
+    .back-home {
+      display: block;
+      padding: 10px;
+      background: #ddd;
+      color: #333;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-top: 16px;
+    }
+    h3 {
+      letter-spacing: 1px;
+    }
   </style>
 </head>
 <body>
   <div class="card">
-    <h2>🔐 Login Admin</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Masuk</button>
+    <h3>🔐 LOGIN ADMIN</h3>
+
+    <div class="input-group">
+      <span>👤</span>
+      <input type="text" id="username" placeholder="Username">
+    </div>
+
+    <div class="input-group">
+      <span>🔒</span>
+      <input type="password" id="password" placeholder="Password">
+    </div>
+
+    <button onclick="login()">MASUK</button>
+    <a href="index.html" class="back-home">🔙 BACK TO HOME</a>
   </div>
+
   <script>
     function login(){
       let user = document.getElementById("username").value;
       let pass = document.getElementById("password").value;
-      if(user && pass){
+
+      if(user === "perpustakaanpribadi" && pass === "KhAlId13052009"){
         localStorage.setItem("login", "true");
+        alert("Login berhasil, selamat datang admin!");
         window.location.href = "admin-koleksi.html";
-      } else {
+      } else if(!user || !pass){
         alert("Isi semua kolom!");
+      } else {
+        alert("Username atau Password salah!");
       }
     }
+
+    document.addEventListener("keypress", function(e){
+      if(e.key === "Enter") login();
+    });
   </script>
 </body>
 </html>
