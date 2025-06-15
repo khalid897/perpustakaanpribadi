@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Daftar Buku & Cetak Label 📋</title>
+  <style>
+    body { font-family: sans-serif; background: #f0f0f0; padding: 20px;}
+    h2 { margin-bottom: 20px;}
+    table { width: 100%; border-collapse: collapse; background: white;}
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center;}
+    th { background: #00C9FF; color: white;}
+    button { padding: 6px 10px; border: none; border-radius: 6px; background: #00C9FF; color: white; cursor: pointer;}
+    canvas { margin-top: 5px;}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+
+<h2>📚 Daftar Buku & Cetak Label</h2>
+<table id="tabelBuku">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Judul</th>
+      <th>Penulis</th>
+      <th>Kategori</th>
+      <th>Tahun</th>
+      <th>Label Barcode</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+  let books = JSON.parse(localStorage.getItem("books")) || [];
+  let tbody = document.querySelector("#tabelBuku tbody");
+
+  if(books.length === 0){
+    tbody.innerHTML = "<tr><td colspan='6'>Tidak ada buku.</td></tr>";
+  } else {
+    books.forEach((buku, index) => {
+      let tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${index+1}</td>
+        <td>${buku.judul}</td>
+        <td>${buku.penulis}</td>
+        <td>${buku.kategori}</td>
+        <td>${buku.tahun}</td>
+        <td>
+          <canvas id="barcode-${index}"></canvas>
+        </td>
+      `;
+      tbody.appendChild(tr);
+      JsBarcode(`#barcode-${index}`, buku.judul, {
+        format: "CODE128",
+        width: 1,
+        height: 30,
+        displayValue: false
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
