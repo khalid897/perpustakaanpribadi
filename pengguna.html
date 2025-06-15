@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Profil Pengguna</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(135deg, #00C9FF, #92FE9D);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: #333;
+      color: white;
+      padding: 30px 20px;
+      border-radius: 12px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: 2px solid #2980b9;
+    }
+
+    .card img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      border: 3px solid #2980b9;
+    }
+
+    .info-section {
+      margin-bottom: 15px;
+    }
+
+    .info-section label {
+      display: block;
+      font-size: 12px;
+      color: #cccccc;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+    }
+
+    .info-section p {
+      margin: 0;
+      font-weight: bold;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #2980b9;
+      margin: 15px 0;
+    }
+
+    .social {
+      font-style: italic;
+      font-size: 14px;
+      color: #cccccc;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      background: #f06292;
+      color: white;
+      padding: 10px 18px;
+      text-decoration: none;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .back-button:hover {
+      background: #e91e63;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <img src="profil.png" alt="Foto Pengguna">
+    
+    <div class="info-section">
+      <label>NAMA</label>
+      <p>ACHMAD KHALID</p>
+    </div>
+    <hr>
+
+    <div class="info-section">
+      <label>LOKASI</label>
+      <p>SLOPENG, DASUK, SUMENEP</p>
+    </div>
+    <hr>
+
+    <div class="info-section">
+      <label>NO. HP/WA</label>
+      <p>085930220909/087761792322</p>
+    </div>
+    <hr>
+
+    <div class="info-section">
+      <label>MEDIA SOSIAL</label>
+      <p class="social">TIKTOK: ACH_KHALID</p>
+    </div>
+
+    <a href="index.html" class="back-button">← Kembali</a>
+  </div>
+
+</body>
+</html>
