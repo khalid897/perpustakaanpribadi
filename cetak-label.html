@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Cetak Label Rak Buku</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(135deg, #00C9FF, #92FE9D);
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2980b9;
+      margin-bottom: 30px;
+    }
+
+    .label-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .label {
+      width: 240px;
+      height: 150px;
+      background: white;
+      border: 1px solid black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.9);
+      animation: fadeInScale 0.5s ease forwards;
+    }
+
+    .label .line {
+      font-size: 14px;
+      font-weight: bold;
+      margin: 2px 0;
+      color: #333;
+    }
+
+    .no-print {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .no-print button {
+      background: #f06292;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .no-print button:hover {
+      background: #e91e63;
+      transform: scale(1.05);
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .no-print, h1 {
+        display: none;
+      }
+
+      .label {
+        width: 220px;
+        height: 160px;
+        background: white;
+        border: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+        overflow: hidden;
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+    .label-header {
+      background: #d3d3d3;
+      width: 101%;
+      height: 43px;
+      text-align: center;
+      font-weight: bold;
+      padding: 6px 4px;
+      font-size: 15px;
+      line-height: 1.1;
+      box-sizing: border-box;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cetak Label Rak Buku</h1>
+
+  <div class="no-print">
+    <button onclick="window.print()">🖨️ Cetak Label</button>
+  </div>
+
+  <div class="label-container" id="labelContainer"></div>
+
+  <script>
+    const books = JSON.parse(localStorage.getItem("books")) || [];
+    const container = document.getElementById("labelContainer");
+
+    books.forEach((buku, index) => {
+      const SR = "SR";
+      const klasifikasi = buku.klasifikasi || "000";
+      const pengarang = (buku.penulis || "NNN").substring(0, 3).toUpperCase();
+      const judulHuruf = (buku.judul || "x").substring(0, 1).toLowerCase();
+      const cetakan = "c.1";
+
+      const labelDiv = document.createElement("div");
+      labelDiv.className = "label";
+      labelDiv.style.animationDelay = `${index * 0.1}s`;
+
+      const headerDiv = document.createElement("div");
+      headerDiv.className = "label-header";
+      headerDiv.innerHTML = "Perpustakaan Pibadi<br>Achmad Khalid";
+      labelDiv.appendChild(headerDiv);
+
+      [SR, klasifikasi, pengarang, judulHuruf, cetakan].forEach(text => {
+        const line = document.createElement("div");
+        line.className = "line";
+        line.textContent = text;
+        labelDiv.appendChild(line);
+      });
+
+      container.appendChild(labelDiv);
+    });
+  </script>
+
+</body>
+</html>
