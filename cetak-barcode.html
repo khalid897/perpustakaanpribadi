@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Cetak Barcode</title>
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+  <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <!-- JsBarcode Library -->
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
   <style>
     body {
       font-family: sans-serif;
@@ -32,7 +37,7 @@
       background: white;
       border-radius: 10px;
       border: 2px solid #2980b9;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -106,7 +111,6 @@
   </style>
 </head>
 <body>
-
   <h1>Cetak Barcode</h1>
 
   <div class="no-print">
@@ -116,7 +120,7 @@
   <div class="label-container" id="labelContainer"></div>
 
   <script>
-    // GANTI dengan URL dan API KEY Supabase-mu
+    // Supabase config - GANTI dengan milikmu
     const supabaseUrl = 'https://xbbodgtxbjqoqxmzqrva.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiYm9kZ3R4Ympxb3F4bXpxcnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwNzIxNTksImV4cCI6MjA2NTY0ODE1OX0.2JcNFYUasDTbZF6u6R5xUsdh8dilxUiFvoMYp4MmL9s';
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
@@ -172,9 +176,7 @@
       });
     }
 
-    // Jalankan saat halaman dimuat
-    ambilDataBuku();
+    document.addEventListener("DOMContentLoaded", ambilDataBuku);
   </script>
-
 </body>
 </html>
