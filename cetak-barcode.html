@@ -4,12 +4,7 @@
   <meta charset="UTF-8" />
   <title>Cetak Barcode</title>
 
-  <!-- Supabase SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-  <!-- JsBarcode Library -->
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-
+  <!-- Tambahkan CSS -->
   <style>
     body {
       font-family: sans-serif;
@@ -48,20 +43,8 @@
     }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .barcode-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .barcode-wrapper canvas {
@@ -88,25 +71,10 @@
       cursor: pointer;
     }
 
-    .no-print button:hover {
-      background: #e91e63;
-    }
-
     @media print {
-      body {
-        background: white;
-      }
-
-      .no-print, h1 {
-        display: none;
-      }
-
-      .label {
-        box-shadow: none;
-        page-break-inside: avoid;
-        animation: none;
-        opacity: 1;
-      }
+      body { background: white; }
+      .no-print, h1 { display: none; }
+      .label { box-shadow: none; opacity: 1; animation: none; }
     }
   </style>
 </head>
@@ -119,29 +87,27 @@
 
   <div class="label-container" id="labelContainer"></div>
 
+  <!-- Library Supabase dan JsBarcode -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
   <script>
-    // Supabase config - GANTI dengan milikmu
-    const supabaseUrl = 'https://xbbodgtxbjqoqxmzqrva.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiYm9kZ3R4Ympxb3F4bXpxcnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwNzIxNTksImV4cCI6MjA2NTY0ODE1OX0.2JcNFYUasDTbZF6u6R5xUsdh8dilxUiFvoMYp4MmL9s';
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Ganti sesuai dengan project Supabase kamu
+      const supabaseUrl = 'https://xbbodgtxbjqoqxmzqrva.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiYm9kZ3R4Ympxb3F4bXpxcnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwNzIxNTksImV4cCI6MjA2NTY0ODE1OX0.2JcNFYUasDTbZF6u6R5xUsdh8dilxUiFvoMYp4MmL9s';
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    async function ambilDataBuku() {
       const { data: books, error } = await supabase.from("buku").select("*");
-
       if (error) {
         console.error("Gagal mengambil data:", error.message);
         return;
       }
 
-      tampilkanBarcode(books);
-    }
-
-    function tampilkanBarcode(books) {
       const container = document.getElementById("labelContainer");
-      container.innerHTML = "";
 
       books.forEach((buku, i) => {
-        const idInv = buku.id_inventaris || ("INV-" + String(i + 1).padStart(3, "0"));
+        const idInv = buku.id_inventaris || `INV-${String(i + 1).padStart(3, "0")}`;
         const judul = buku.judul || "Tanpa Judul";
 
         const labelDiv = document.createElement("div");
@@ -152,8 +118,6 @@
         barcodeWrap.className = "barcode-wrapper";
 
         const canvas = document.createElement("canvas");
-        canvas.id = "barcode-" + i;
-
         const labelText = document.createElement("div");
         labelText.textContent = idInv;
 
@@ -174,9 +138,7 @@
           marginBottom: 0
         });
       });
-    }
-
-    document.addEventListener("DOMContentLoaded", ambilDataBuku);
+    });
   </script>
 </body>
 </html>
