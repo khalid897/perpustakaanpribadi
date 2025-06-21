@@ -27,8 +27,8 @@
     }
 
     .label {
-      width: 180px;
-      height: 140px;
+      width: 200px;
+      height: 70px;
       background: white;
       border-radius: 10px;
       border: 2px solid #2980b9;
@@ -54,12 +54,25 @@
     }
 
     .barcode-wrapper canvas {
-      margin-bottom: 4px;
+      margin-top: 0x;
+      margin-bottom: 0px;
     }
 
-    .barcode-wrapper div {
-      font-size: 10px;
+    .barcode-wrapper div:last-child {
+      margin-top: -9px;
+      font-size: 9px;
       color: #333;
+    }
+
+    .judul-buku {
+      font-size: 7px;
+      font-weight: bold;
+      font-family: Microsoft Himalaya, sans-serif;
+      text-align: center;
+      max-width: 160px;
+      white-space: normal;
+      overflow-wrap: break-word;
+      margin-bottom: -2px;
     }
 
     .no-print {
@@ -135,12 +148,17 @@
         const barcodeWrap = document.createElement("div");
         barcodeWrap.className = "barcode-wrapper";
 
+        const judulDiv = document.createElement("div");
+        judulDiv.className = "judul-buku";
+        judulDiv.textContent = judul;
+
         const canvas = document.createElement("canvas");
         canvas.id = "barcode-" + i;
 
         const labelText = document.createElement("div");
         labelText.textContent = idInv;
 
+        barcodeWrap.appendChild(judulDiv);
         barcodeWrap.appendChild(canvas);
         barcodeWrap.appendChild(labelText);
         labelDiv.appendChild(barcodeWrap);
@@ -150,17 +168,11 @@
           format: "CODE128",
           width: 1.5,
           height: 50,
-          displayValue: true,
-          text: judul,
-          textPosition: "top",
-          fontSize: 8,
-          marginTop: 0,
-          marginBottom: 0
+          displayValue: false
         });
       });
     }
 
-    // Jalankan saat halaman dimuat
     ambilDataBuku();
   </script>
 
