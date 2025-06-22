@@ -383,5 +383,14 @@ function batalEdit() {
   idBarisSedangDiedit = null;
   tampilDaftarBuku();
 }
-</script></body>
+</script>
+<script>
+  // Cek apakah user sudah login via session
+  if (sessionStorage.getItem("login") !== "true") {
+    // Belum login, redirect ke login.html
+    window.location.href = "login.html";
+  }
+</script>
+
+</body>
 </html>
