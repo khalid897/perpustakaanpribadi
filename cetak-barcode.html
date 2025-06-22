@@ -16,7 +16,29 @@
     h1 {
       text-align: center;
       color: #2980b9;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+    }
+
+    .no-print {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .no-print button, .no-print select {
+      background: #f06292;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .no-print select {
+      background: white;
+      color: #333;
+      font-weight: normal;
     }
 
     .label-container {
@@ -28,7 +50,7 @@
 
     .label {
       width: 200px;
-      height: 70px;
+      height: 90px;
       background: white;
       border-radius: 10px;
       border: 2px solid #2980b9;
@@ -38,13 +60,7 @@
       align-items: center;
       justify-content: center;
       padding: 10px;
-      opacity: 0;
-      animation: fadeInUp 0.5s ease forwards;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      position: relative;
     }
 
     .barcode-wrapper {
@@ -54,83 +70,97 @@
     }
 
     .barcode-wrapper canvas {
-      margin-top: 0x;
-      margin-bottom: 0px;
+      margin-bottom: 4px;
     }
 
     .barcode-wrapper div:last-child {
-      margin-top: -9px;
-      font-size: 9px;
+      font-size: 10px;
       color: #333;
     }
 
     .judul-buku {
-      font-size: 7px;
+      font-size: 9px;
       font-weight: bold;
-      font-family: Microsoft Himalaya, sans-serif;
       text-align: center;
       max-width: 160px;
       white-space: normal;
       overflow-wrap: break-word;
-      margin-bottom: -2px;
+      margin-bottom: 2px;
     }
 
-    .no-print {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .no-print button {
-      background: #f06292;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .no-print button:hover {
-      background: #e91e63;
+    .pilih-cetak {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      transform: scale(1.2);
     }
 
     @media print {
       body { background: white; }
-      .no-print, h1 { display: none; }
+      .no-print, h1, .pilih-cetak {
+        display: none;
+      }
       .label {
         box-shadow: none;
         page-break-inside: avoid;
-        animation: none;
-        opacity: 1;
       }
     }
   </style>
 </head>
 <body>
 
-  <h1>Cetak Barcode</h1>
+  <h1>Cetak Barcode Buku</h1>
 
   <div class="no-print">
-    <button onclick="window.print()">🖨️ Cetak Area Ini</button>
+    <select id="filterKategori" onchange="filterData()">
+      <option value="">📁 Semua Kategori</option>
+    </select>
+    <button onclick="cetakTerpilih()">🖨️ Cetak Terpilih</button>
   </div>
 
   <div class="label-container" id="labelContainer"></div>
 
   <script>
-    // GANTI dengan URL dan API KEY Supabase-mu
-    const supabaseUrl = 'https://xbbodgtxbjqoqxmzqrva.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiYm9kZ3R4Ympxb3F4bXpxcnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwNzIxNTksImV4cCI6MjA2NTY0ODE1OX0.2JcNFYUasDTbZF6u6R5xUsdh8dilxUiFvoMYp4MmL9s';
-    const db = supabase.createClient(supabaseUrl, supabaseKey);
+    const supabase = window.supabase.createClient(
+      'https://xbbodgtxbjqoqxmzqrva.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiYm9kZ3R4Ympxb3F4bXpxcnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwNzIxNTksImV4cCI6MjA2NTY0ODE1OX0.2JcNFYUasDTbZF6u6R5xUsdh8dilxUiFvoMYp4MmL9s'
+    );
+
+    let semuaBuku = [];
 
     async function ambilDataBuku() {
-      const { data: books, error } = await db.from("buku").select("*");
+      const { data: books, error } = await supabase
+        .from("buku")
+        .select("*")
+        .order("id_inventaris", { ascending: true });
 
       if (error) {
         console.error("Gagal mengambil data:", error.message);
         return;
       }
 
+      semuaBuku = books;
+      isiDropdownKategori(books);
       tampilkanBarcode(books);
+    }
+
+    function isiDropdownKategori(books) {
+      const kategoriSet = new Set();
+      books.forEach(b => kategoriSet.add(b.kategori || "Tanpa Kategori"));
+
+      const select = document.getElementById("filterKategori");
+      kategoriSet.forEach(kat => {
+        const opt = document.createElement("option");
+        opt.value = kat;
+        opt.textContent = kat;
+        select.appendChild(opt);
+      });
+    }
+
+    function filterData() {
+      const kat = document.getElementById("filterKategori").value;
+      const hasil = kat ? semuaBuku.filter(b => b.kategori === kat) : semuaBuku;
+      tampilkanBarcode(hasil);
     }
 
     function tampilkanBarcode(books) {
@@ -138,12 +168,16 @@
       container.innerHTML = "";
 
       books.forEach((buku, i) => {
-        const idInv = buku.id_inventaris || ("INV-" + String(i + 1).padStart(3, "0"));
+        const idInv = buku.id_inventaris || `INV-${i + 1}`;
         const judul = buku.judul || "Tanpa Judul";
 
         const labelDiv = document.createElement("div");
         labelDiv.className = "label";
-        labelDiv.style.animationDelay = `${i * 0.1}s`;
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "pilih-cetak";
+        checkbox.checked = true;
 
         const barcodeWrap = document.createElement("div");
         barcodeWrap.className = "barcode-wrapper";
@@ -153,7 +187,6 @@
         judulDiv.textContent = judul;
 
         const canvas = document.createElement("canvas");
-        canvas.id = "barcode-" + i;
 
         const labelText = document.createElement("div");
         labelText.textContent = idInv;
@@ -161,16 +194,29 @@
         barcodeWrap.appendChild(judulDiv);
         barcodeWrap.appendChild(canvas);
         barcodeWrap.appendChild(labelText);
+
+        labelDiv.appendChild(checkbox);
         labelDiv.appendChild(barcodeWrap);
         container.appendChild(labelDiv);
 
         JsBarcode(canvas, idInv, {
           format: "CODE128",
           width: 1.5,
-          height: 50,
+          height: 40,
           displayValue: false
         });
       });
+    }
+
+    function cetakTerpilih() {
+      document.querySelectorAll('.label').forEach(label => {
+        const cb = label.querySelector('.pilih-cetak');
+        if (!cb || !cb.checked) {
+          label.style.display = 'none';
+        }
+      });
+      window.print();
+      setTimeout(() => window.location.reload(), 1000);
     }
 
     ambilDataBuku();
