@@ -105,7 +105,6 @@
       background-color: #1f6391;
     }
 
-    /* Animasi */
     @keyframes fadeSlideIn {
       0% {
         opacity: 0;
@@ -127,6 +126,27 @@
     .delay-3 { animation-delay: 0.7s; }
     .delay-4 { animation-delay: 0.9s; }
     .delay-5 { animation-delay: 1.1s; }
+
+    /* Tombol WhatsApp */
+    .wa-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      font-size: 14px;
+      z-index: 999;
+      transition: background 0.3s;
+    }
+
+    .wa-button:hover {
+      background: #1ebd5a;
+    }
   </style>
 </head>
 <body>
@@ -156,6 +176,10 @@
     <a href="#">Indonesia</a>
     <a href="#">Arabic</a>
   </div>
+
+  <!-- Tombol WhatsApp -->
+  <a href="https://wa.me/6285932220909?text=Halo%20Admin%20Perpustakaan%2C%20saya%20ingin%20bertanya%20tentang%20koleksi%20buku." 
+     class="wa-button" target="_blank" title="Hubungi Admin via WhatsApp">💬 Hubungi Admin</a>
 
   <script>
     function cariBuku() {
