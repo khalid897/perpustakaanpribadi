@@ -141,37 +141,39 @@
   </div>
 
   <script>
-    function login(button) {
-      const user = document.getElementById("username").value.trim();
-      const pass = document.getElementById("password").value.trim();
-      const card = document.querySelector(".card");
+  function login(button) {
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
+    const card = document.querySelector(".card");
 
-      if (!user || !pass) {
-        alert("Isi semua kolom!");
-        card.classList.add("shake");
-        setTimeout(() => card.classList.remove("shake"), 500);
-        return;
-      }
-
-      button.classList.add("loading");
-
-      setTimeout(() => {
-        if (user === "perpustakaan" && pass === "pribadi") {
-          localStorage.setItem("login", "true");
-          alert("Login berhasil, selamat datang admin!");
-          window.location.href = "admin-koleksi.html";
-        } else {
-          button.classList.remove("loading");
-          alert("Username atau Password salah!");
-          card.classList.add("shake");
-          setTimeout(() => card.classList.remove("shake"), 500);
-        }
-      }, 1000);
+    if (!user || !pass) {
+      alert("Isi semua kolom!");
+      card.classList.add("shake");
+      setTimeout(() => card.classList.remove("shake"), 500);
+      return;
     }
 
-    document.addEventListener("keypress", function(e){
-      if (e.key === "Enter") login(document.querySelector("button"));
-    });
-  </script>
+    button.classList.add("loading");
+
+    setTimeout(() => {
+      if (user === "perpustakaan" && pass === "pribadi") {
+        // Simpan sesi login (hilang saat tab/browser ditutup)
+        sessionStorage.setItem("login", "true");
+        alert("Login berhasil, selamat datang admin!");
+        window.location.href = "admin-koleksi.html";
+      } else {
+        button.classList.remove("loading");
+        alert("Username atau Password salah!");
+        card.classList.add("shake");
+        setTimeout(() => card.classList.remove("shake"), 500);
+      }
+    }, 1000);
+  }
+
+  document.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") login(document.querySelector("button"));
+  });
+</script>
+
 </body>
 </html>
